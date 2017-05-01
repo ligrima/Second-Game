@@ -2,12 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour {
+public class Turret : MonoBehaviour
+{
 
     private Transform target;
 
+    //upgrades or change
+    [Header("Attributes")]
+
+
     //range
     public float range = 15f;
+    //fire rate
+    public float fireRate = 1f;
+    //fire count down
+    private float fireCountdown = 0f;
+
+    //unity requires this. should not be changed by the user
+    //headers - organize thing better - better interface
+    [Header("Unity Setup Fields")]
 
     //enemy tag
     public string enemyTag = "Enemy";
@@ -18,13 +31,19 @@ public class Turret : MonoBehaviour {
     //speed to turn
     public float turnSpeed = 10f;
 
+    //bullet
+    public GameObject bulletPrefab;
+    // point to spawn bullets
+    public Transform firePoint;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start()
+    {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
-	}
+    }
 
-    void UpdateTarget ()
+    void UpdateTarget()
     {
         //array to find the enemies attacked and store in this array
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
@@ -37,14 +56,14 @@ public class Turret : MonoBehaviour {
         foreach (GameObject enemy in enemies)
         {
             //get distance to enemy and store in distanceToEnemy
-            float distanceToEnemy = Vector3.Distance (transform.position, enemy.transform.position);
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
             //if distance to enemy is the shortest distance found, store this distance in distanceToEnemy, so that the nearest enemy found is the same enemy
             if (distanceToEnemy < shortestDistance)
             {
                 shortestDistance = distanceToEnemy;
                 nearestEnemy = enemy;
-                
+
             }
         }
 
@@ -52,16 +71,19 @@ public class Turret : MonoBehaviour {
         if (nearestEnemy != null && shortestDistance <= range)
         {
             target = nearestEnemy.transform;
-        } else { 
+        }
+        else
+        {
             // if out of range, target is empty
-            target = null;  
+            target = null;
         }
     }
-	
-	// Update is called once per frame
 
-        // if we do not have a target, do nothing
-	void Update () {
+    // Update is called once per frame
+
+    // if we do not have a target, do nothing
+    void Update()
+    {
         if (target == null)
             return;
 
@@ -69,17 +91,38 @@ public class Turret : MonoBehaviour {
         //target lock on
         //vector 3 for 3D (z) dir for direction, get direction
         Vector3 dir = target.position - transform.position;
+
         //how to rotate / how to turn to look in that direction
         Quaternion lookRotation = Quaternion.LookRotation(dir);
+
         //to change from quaternion to euler angles
         //lerp : smooth transitions from one point to another(from the current location to the look rotation(new)
         //over time, and quickness is determened by turnSpeed, and finally covnerted into euler angles
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-	}
 
+        //if firecountdown is less or equal to 0, shoot
+        if (fireCountdown <= 0f)
+        {
+            Shoot();
+            fireCountdown = 1f / fireRate;
+        }
+
+        fireCountdown -= Time.deltaTime;
+
+    }
+
+    //shoot variable
+    void Shoot()
+    {
+        GameObject bulletGO = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Bullet bullet = bulletGO.GetComponent<Bullet>();
+
+        if (bullet != null)
+            bullet.Seek(target);
+    }
     // make sure that the rage is only drawn if we have the turret selected
-    void OnDrawGizmosSelected ()
+    void OnDrawGizmosSelected()
     {
         // draw our range in red
         Gizmos.color = Color.red;
