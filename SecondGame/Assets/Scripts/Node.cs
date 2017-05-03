@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour {
 
@@ -15,17 +16,29 @@ public class Node : MonoBehaviour {
     private Renderer rend;
     private Color startColor;
 
+    BuildManager buildManager;
+
     // get colour of the node, at the beginning of the game, store in startColor
-    private void Start()
+    void Start()
     {
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
 
+        buildManager = BuildManager.instance;
+
     }
 
     //on click while hovering, if turret is not empty, you cant build
-    private void OnMouseDown()
+    void OnMouseDown()
     {
+
+        //check if we are hovering over a UI element which is in the way
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (buildManager.GetTurrentToBuild() == null)
+            return;
+
         if (turret != null)
         {
             Debug.Log("Can't build there! - TODO: Display on screen.");
@@ -33,13 +46,20 @@ public class Node : MonoBehaviour {
         }
 
         //build a turrent
-        GameObject turretToBuild = BuildManager.instance.GetTurrentToBuild();
+        GameObject turretToBuild = buildManager.GetTurrentToBuild();
         turret = (GameObject)Instantiate(turretToBuild, transform.position + positionOffset, transform.rotation);
     }
 
     //when mouse hovers over the node, change colour to the hover colour
     void OnMouseEnter()
     {
+
+        //check if we are hovering over a UI element which is in the way
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (buildManager.GetTurrentToBuild() == null)
+            return;
         rend.material.color = hoverColor;
     }
 
