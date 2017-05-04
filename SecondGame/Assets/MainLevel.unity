@@ -3367,6 +3367,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d02428b9575ac4e81be97be5cd70fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  standardTurret:
+    prefab: {fileID: 1016526798287474, guid: 112ab94f767371e4cbf3f5979d6d612a, type: 2}
+    cost: 100
+  missileLauncher:
+    prefab: {fileID: 1481224678627070, guid: ee4af2179a3c71342bd268a75b56b174, type: 2}
+    cost: 250
 --- !u!1001 &630525042
 Prefab:
   m_ObjectHideFlags: 0
@@ -3683,6 +3689,7 @@ GameObject:
   - component: {fileID: 644136599}
   - component: {fileID: 644136598}
   - component: {fileID: 644136600}
+  - component: {fileID: 644136601}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -3734,6 +3741,18 @@ MonoBehaviour:
     type: 2}
   missileLauncherPrefab: {fileID: 1481224678627070, guid: ee4af2179a3c71342bd268a75b56b174,
     type: 2}
+--- !u!114 &644136601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 644136597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2c8710a94aba0449f046c4f5952ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMoney: 400
 --- !u!1001 &655948904
 Prefab:
   m_ObjectHideFlags: 0
@@ -5389,12 +5408,12 @@ Prefab:
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 394
+      value: 274
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -31
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
@@ -5404,7 +5423,7 @@ Prefab:
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
@@ -5444,6 +5463,11 @@ Prefab:
     - target: {fileID: 1249583640014440, guid: 5fe90b13e335f664099ba427a1ffbec1, type: 2}
       propertyPath: m_Name
       value: StandardTurretItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 114593108039231656, guid: 5fe90b13e335f664099ba427a1ffbec1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SelectStandardTurret
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5fe90b13e335f664099ba427a1ffbec1, type: 2}
@@ -10968,6 +10992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.6397059, g: 0.62559474, b: 0.62559474, a: 0.584}
   positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!33 &1791254243
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11804,12 +11829,12 @@ Prefab:
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 464
+      value: 344
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -31
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
@@ -11819,7 +11844,7 @@ Prefab:
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 224605854413326700, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
@@ -11863,7 +11888,7 @@ Prefab:
     - target: {fileID: 114593108039231656, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseMissileLauncher
+      value: SelectMissileLauncher
       objectReference: {fileID: 0}
     - target: {fileID: 114593108039231656, guid: 5fe90b13e335f664099ba427a1ffbec1,
         type: 2}

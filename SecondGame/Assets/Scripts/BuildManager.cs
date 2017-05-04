@@ -22,15 +22,29 @@ public class BuildManager : MonoBehaviour {
     //stores the another turret prefab
     public GameObject missileLauncherPrefab;
 
+    //property. variable = CanBuild. If we can build check if it is not equal to null and if it isnt, return true so we can build, else false - cant build.
+    public bool CanBuild { get { return turretToBuild != null; } }
 
-    private GameObject turretToBuild;
-
-    public GameObject GetTurrentToBuild ()
+    public void BuildTurretOn (Node node)
     {
-        return turretToBuild;
+        if (PlayerStats.Money < turretToBuild.cost)
+        {
+            Debug.Log("Not enough money to buld that!");
+            return;
+        }
+
+        PlayerStats.Money -= turretToBuild.cost;
+
+        //build the selected turret, in the selected position on node
+        GameObject turret = (GameObject)Instantiate(turretToBuild.prefab, node.GetBuildPosition(), Quaternion.identity);
+        node.turret = turret;
+
+        Debug.Log("Turret build! Money left: " + PlayerStats.Money);
     }
 
-    public void SetTurretToBuild (GameObject turret)
+    private TurretBlueprint turretToBuild;
+
+   public void SelectTurretToBuild(TurretBlueprint turret)
     {
         turretToBuild = turret;
     }
