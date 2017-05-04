@@ -8,6 +8,8 @@ public class Node : MonoBehaviour {
     //create variable hoverColor
     public Color hoverColor;
 
+    public Color notEnoughMoneyColor;
+
     //create variable positionOffset so that we can arrange the position
     public Vector3 positionOffset;
 
@@ -66,11 +68,19 @@ public class Node : MonoBehaviour {
         if (!buildManager.CanBuild)
             return;
 
-        rend.material.color = hoverColor;
+        if (buildManager.HasMoney)
+        {
+             
+            rend.material.color = hoverColor;
+        }else
+        {
+            rend.material.color = notEnoughMoneyColor;
+        }
+        
     }
 
     //when mouse is not hovering on the node, change colour to the start colour
-    private void OnMouseExit()
+    void OnMouseExit()
     {
         rend.material.color = startColor;
     }

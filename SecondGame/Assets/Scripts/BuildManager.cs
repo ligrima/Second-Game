@@ -25,6 +25,8 @@ public class BuildManager : MonoBehaviour {
     //property. variable = CanBuild. If we can build check if it is not equal to null and if it isnt, return true so we can build, else false - cant build.
     public bool CanBuild { get { return turretToBuild != null; } }
 
+    public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
+
     public void BuildTurretOn (Node node)
     {
         if (PlayerStats.Money < turretToBuild.cost)
