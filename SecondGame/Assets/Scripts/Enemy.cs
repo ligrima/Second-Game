@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+    //speed
     public float speed = 10f;
 
+    // health
+    public int health = 100;
+
+    //money - when enemy dies
+    public int value = 50;
+     
     private Transform target;
     private int wavepointIndex = 0;
 
@@ -14,7 +21,23 @@ public class Enemy : MonoBehaviour {
         target = Waypoints.points[0];
     }
 
-    private void Update()
+    public void TakeDamage (int amount)
+    {
+        health -= amount;
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die ()
+    {
+        PlayerStats.Money += value;
+        Destroy(gameObject);
+    }
+
+    void Update()
     {
         //dir= direction
         Vector3 dir = target.position - transform.position;
@@ -31,12 +54,18 @@ public class Enemy : MonoBehaviour {
 
         if (wavepointIndex >= Waypoints.points.Length - 1)
         {
-            Destroy(gameObject);
+            EndPath();
             return;
         }
         wavepointIndex++;
         target = Waypoints.points[wavepointIndex];
 
+    }
+
+    void EndPath ()
+    {
+        PlayerStats.Lives--;
+        Destroy(gameObject);
     }
 
 }
