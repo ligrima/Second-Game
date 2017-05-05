@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour {
 
@@ -47,6 +49,11 @@ public class Enemy : MonoBehaviour {
         {
             GetNextWaypoint();
         }
+
+        if (health <= 0)
+        {
+            SceneManager.LoadScene("GameOverScene");
+        }
     }
 
     void GetNextWaypoint()
@@ -68,4 +75,5 @@ public class Enemy : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    
 }
