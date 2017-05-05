@@ -72,6 +72,8 @@ public class Bullet : MonoBehaviour {
         }
     }
 
+    // damage the enemy
+
     void Damage (Transform enemy)
     {
         Enemy e = enemy.GetComponent<Enemy>();

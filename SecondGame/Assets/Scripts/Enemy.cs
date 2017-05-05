@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour {
     // health
     public int health = 100;
 
-    //money - when enemy dies
+    //money
     public int value = 50;
      
     private Transform target;
@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour {
         target = Waypoints.points[0];
     }
 
+   // if health is less or equal to 0 die
     public void TakeDamage (int amount)
     {
         health -= amount;
@@ -33,6 +34,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    //add value to the money and destroy enemy
     void Die ()
     {
         PlayerStats.Money += value;
@@ -50,10 +52,6 @@ public class Enemy : MonoBehaviour {
             GetNextWaypoint();
         }
 
-        if (health <= 0)
-        {
-            SceneManager.LoadScene("GameOverScene");
-        }
     }
 
     void GetNextWaypoint()
@@ -69,6 +67,7 @@ public class Enemy : MonoBehaviour {
 
     }
 
+    // if reaches the end, reduce life, destroy enemy
     void EndPath ()
     {
         PlayerStats.Lives--;
